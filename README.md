@@ -24,18 +24,13 @@ A browser extension that helps you prioritize GitHub pull requests by sorting th
    cd sortPR
    ```
 
-2. **Generate Icons** (Required)
-   - Open `icons/icon-generator.html` in your browser
-   - Download all four icon sizes (16x16, 32x32, 48x48, 128x128)
-   - Save them in the `icons/` directory with the correct names
-
-3. **Load in Chrome/Edge**
+2. **Load in Chrome/Edge**
    - Open Chrome/Edge and go to `chrome://extensions/`
    - Enable "Developer mode" (toggle in top right)
    - Click "Load unpacked"
    - Select the `sortPR` folder
 
-4. **Load in Firefox**
+3. **Load in Firefox**
    - Open Firefox and go to `about:debugging`
    - Click "This Firefox"
    - Click "Load Temporary Add-on"
@@ -69,12 +64,12 @@ sortPR/
 ├── background.js        # Background service worker
 ├── styles.css          # Styling for the extension UI
 ├── icons/              # Extension icons
-│   ├── icon-generator.html  # Tool to generate icons
+│   ├── icon-generator.html  # To generate icons
 │   ├── icon16.png
 │   ├── icon32.png
 │   ├── icon48.png
 │   └── icon128.png
-└── README.md           # This file
+└── README.md           
 ```
 
 ## API Usage
