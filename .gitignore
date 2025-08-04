@@ -1,0 +1,14 @@
+# OS files
+.DS_Store
+Thumbs.db
+
+# Browser Extension builds
+*.crx
+*.pem
+*.zip
+
+# Development
+.vscode/
+.idea/
+node_modules/
+.env

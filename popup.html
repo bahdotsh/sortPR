@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GitHub PR Contributor Sorter</title>
+  <style>
+    body {
+      width: 320px;
+      padding: 20px;
+      margin: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+      background: #ffffff;
+    }
+
+    .header {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    .logo {
+      font-size: 32px;
+      margin-bottom: 8px;
+    }
+
+    .title {
+      font-size: 18px;
+      font-weight: 600;
+      color: #24292f;
+      margin: 0;
+    }
+
+    .subtitle {
+      font-size: 14px;
+      color: #656d76;
+      margin: 4px 0 0 0;
+    }
+
+    .section {
+      margin-bottom: 20px;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      color: #24292f;
+      margin-bottom: 8px;
+    }
+
+    .info-card {
+      background: #f6f8fa;
+      border: 1px solid #d1d9e0;
+      border-radius: 6px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 13px;
+    }
+
+    .info-item:last-child {
+      margin-bottom: 0;
+    }
+
+    .info-icon {
+      margin-right: 8px;
+      font-size: 14px;
+    }
+
+    .status {
+      display: flex;
+      align-items: center;
+      padding: 8px 12px;
+      border-radius: 6px;
+      font-size: 13px;
+      margin-bottom: 12px;
+    }
+
+    .status.active {
+      background: #d1e7dd;
+      color: #0f5132;
+    }
+
+    .status.inactive {
+      background: #f8d7da;
+      color: #721c24;
+    }
+
+    .buttons {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #0969da;
+      color: #ffffff;
+      border: none;
+      border-radius: 6px;
+      padding: 10px 16px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background-color 0.2s ease;
+    }
+
+    .btn:hover {
+      background: #0860ca;
+    }
+
+    .btn.secondary {
+      background: #ffffff;
+      color: #24292f;
+      border: 1px solid #d1d9e0;
+    }
+
+    .btn.secondary:hover {
+      background: #f3f4f6;
+    }
+
+    .btn-icon {
+      margin-right: 8px;
+    }
+
+    .divider {
+      border: none;
+      border-top: 1px solid #d1d9e0;
+      margin: 16px 0;
+    }
+
+    .footer {
+      text-align: center;
+      font-size: 12px;
+      color: #656d76;
+    }
+
+    .footer a {
+      color: #0969da;
+      text-decoration: none;
+    }
+
+    .footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+  <div class="header">
+    <div class="logo">👥</div>
+    <h1 class="title">PR Contributor Sorter</h1>
+    <p class="subtitle">Sort GitHub PRs by contributor status</p>
+  </div>
+
+  <div class="section">
+    <div id="page-status" class="status inactive">
+      <span>⚠️ Navigate to a GitHub repository's pull requests page</span>
+    </div>
+  </div>
+
+  <div class="section" id="sorting-section" style="display: none;">
+    <div class="section-title">Sort Pull Requests</div>
+    <div class="buttons">
+      <button id="sort-new-first" class="btn">
+        <span class="btn-icon">🆕</span>
+        New Contributors First
+      </button>
+      
+      <button id="sort-existing-first" class="btn secondary">
+        <span class="btn-icon">🔄</span>
+        Existing Contributors First
+      </button>
+      
+      <button id="sort-default" class="btn secondary">
+        <span class="btn-icon">📋</span>
+        Default Order
+      </button>
+    </div>
+    
+    <div id="sort-status" class="info-card" style="margin-top: 12px; display: none;">
+      <div class="info-item">
+        <span class="info-icon">ℹ️</span>
+        <span id="sort-status-text"></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">GitHub Token (Optional)</div>
+    <div class="info-card">
+      <div class="info-item">
+        <span class="info-icon">🔑</span>
+        <span><strong>For unlimited requests:</strong> Add your GitHub personal access token</span>
+      </div>
+      <div style="margin-top: 8px;">
+        <input type="password" id="github-token" placeholder="ghp_xxxxxxxxxxxxxxxxxxxx" 
+               style="width: 100%; padding: 6px 8px; border: 1px solid #d1d9e0; border-radius: 4px; font-size: 13px; box-sizing: border-box;">
+        <div style="display: flex; gap: 8px; margin-top: 8px;">
+          <button id="save-token" class="btn secondary" style="flex: 1; padding: 6px 12px; font-size: 12px;">Save</button>
+          <button id="clear-token" class="btn secondary" style="flex: 1; padding: 6px 12px; font-size: 12px;">Clear</button>
+        </div>
+      </div>
+      <div class="info-item" style="margin-top: 8px; font-size: 11px; color: #656d76;">
+        <span class="info-icon">ℹ️</span>
+        <span>Token needs 'public_repo' scope. <a href="https://github.com/settings/tokens/new" target="_blank" style="color: #0969da;">Generate here</a></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="section-title">Current Settings</div>
+    <div class="info-card">
+      <div class="info-item">
+        <span class="info-icon">📋</span>
+        <span>Sort Order: <strong id="current-sort">Default</strong></span>
+      </div>
+      <div class="info-item">
+        <span class="info-icon">🔑</span>
+        <span>Token: <strong id="token-status">Not Set</strong></span>
+      </div>
+      <div class="info-item">
+        <span class="info-icon">📊</span>
+        <span>Mode: <strong id="api-mode">REST API (Limited)</strong></span>
+      </div>
+    </div>
+  </div>
+
+  <div class="buttons">
+    <button id="open-github" class="btn secondary">
+      <span class="btn-icon">🔗</span>
+      Open GitHub
+    </button>
+    
+    <button id="refresh-page" class="btn secondary">
+      <span class="btn-icon">🔄</span>
+      Refresh Current Page
+    </button>
+  </div>
+
+  <hr class="divider">
+
+  <div class="footer">
+    <p>Made with ❤️ for GitHub contributors</p>
+    <p><a href="#" id="help-link">Need help?</a></p>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

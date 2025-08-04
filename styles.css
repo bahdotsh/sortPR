@@ -1,0 +1,180 @@
+/* GitHub PR Contributor Sorter Styles */
+
+.pr-sorter-controls {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: 16px;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Noto Sans", Helvetica, Arial, sans-serif;
+}
+
+.pr-sorter-header {
+  font-size: 12px;
+  font-weight: 400;
+  color: #656d76;
+  white-space: nowrap;
+}
+
+.pr-sorter-icon {
+  margin-right: 4px;
+  font-size: 12px;
+}
+
+.pr-sorter-buttons {
+  display: inline-flex;
+  gap: 1px;
+  align-items: center;
+  border: 1px solid #d1d9e0;
+  border-radius: 6px;
+  overflow: hidden;
+}
+
+.pr-sorter-btn {
+  background: #f6f8fa;
+  border: none;
+  padding: 4px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  color: #24292f;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  border-right: 1px solid #d1d9e0;
+}
+
+.pr-sorter-btn:last-child {
+  border-right: none;
+}
+
+.pr-sorter-btn:hover {
+  background: #f3f4f6;
+}
+
+.pr-sorter-btn.active {
+  background: #dbeafe;
+  color: #1e40af;
+  font-weight: 600;
+}
+
+.pr-sorter-btn:disabled {
+  color: #8c959f;
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.pr-sorter-status {
+  font-size: 11px;
+  color: #656d76;
+  font-style: italic;
+  margin-left: 8px;
+}
+
+.pr-sorter-status.loading {
+  color: #0969da;
+}
+
+.pr-sorter-status.success {
+  color: #1a7f37;
+}
+
+.pr-sorter-status.error {
+  color: #cf222e;
+}
+
+/* Contributor badges */
+.contributor-badge {
+  display: inline-block;
+  font-size: 11px;
+  font-weight: 500;
+  padding: 2px 6px;
+  border-radius: 12px;
+  margin-left: 8px;
+  vertical-align: middle;
+}
+
+.contributor-badge-new {
+  background: #dbeafe;
+  color: #1e40af;
+  border: 1px solid #93c5fd;
+}
+
+.contributor-badge-existing {
+  background: #dcfce7;
+  color: #166534;
+  border: 1px solid #86efac;
+}
+
+/* Dark mode support */
+[data-color-mode="dark"] .pr-sorter-header {
+  color: #8b949e;
+}
+
+[data-color-mode="dark"] .pr-sorter-buttons {
+  border-color: #30363d;
+}
+
+[data-color-mode="dark"] .pr-sorter-btn {
+  background: #21262d;
+  color: #f0f6fc;
+  border-color: #30363d;
+}
+
+[data-color-mode="dark"] .pr-sorter-btn:hover {
+  background: #30363d;
+}
+
+[data-color-mode="dark"] .pr-sorter-btn.active {
+  background: #1e3a8a;
+  color: #bfdbfe;
+}
+
+[data-color-mode="dark"] .pr-sorter-status {
+  color: #8b949e;
+}
+
+[data-color-mode="dark"] .contributor-badge-new {
+  background: #1e3a8a;
+  color: #bfdbfe;
+  border-color: #3b82f6;
+}
+
+[data-color-mode="dark"] .contributor-badge-existing {
+  background: #14532d;
+  color: #bbf7d0;
+  border-color: #22c55e;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .pr-sorter-buttons {
+    flex-direction: column;
+  }
+  
+  .pr-sorter-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Animation for sorting */
+@keyframes sortTransition {
+  0% {
+    opacity: 0.5;
+    transform: translateY(-4px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.js-navigation-item,
+.js-issue-row {
+  animation: sortTransition 0.3s ease-out;
+}
+
+/* Loading state */
+.pr-sorter-controls.loading .pr-sorter-btn {
+  opacity: 0.6;
+  pointer-events: none;
+}

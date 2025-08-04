@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Icon Generator for GitHub PR Contributor Sorter</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .icon-container {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            margin: 20px 0;
+        }
+        .icon-item {
+            text-align: center;
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .icon-item h3 {
+            margin: 10px 0 5px 0;
+        }
+        .download-btn {
+            background: #0969da;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .download-btn:hover {
+            background: #0860ca;
+        }
+        canvas {
+            border: 1px solid #ddd;
+        }
+    </style>
+</head>
+<body>
+    <h1>GitHub PR Contributor Sorter - Icon Generator</h1>
+    <p>Use this page to generate the icons for the browser extension. Right-click on each icon and "Save image as..." to download.</p>
+    
+    <div class="icon-container">
+        <div class="icon-item">
+            <h3>16x16</h3>
+            <canvas id="icon16" width="16" height="16"></canvas>
+            <br>
+            <button class="download-btn" onclick="downloadIcon('icon16', 'icon16.png')">Download</button>
+        </div>
+        
+        <div class="icon-item">
+            <h3>32x32</h3>
+            <canvas id="icon32" width="32" height="32"></canvas>
+            <br>
+            <button class="download-btn" onclick="downloadIcon('icon32', 'icon32.png')">Download</button>
+        </div>
+        
+        <div class="icon-item">
+            <h3>48x48</h3>
+            <canvas id="icon48" width="48" height="48"></canvas>
+            <br>
+            <button class="download-btn" onclick="downloadIcon('icon48', 'icon48.png')">Download</button>
+        </div>
+        
+        <div class="icon-item">
+            <h3>128x128</h3>
+            <canvas id="icon128" width="128" height="128"></canvas>
+            <br>
+            <button class="download-btn" onclick="downloadIcon('icon128', 'icon128.png')">Download</button>
+        </div>
+    </div>
+
+    <div style="margin-top: 40px; padding: 20px; background: white; border-radius: 8px;">
+        <h3>Instructions:</h3>
+        <ol>
+            <li>The icons are automatically generated when this page loads</li>
+            <li>Right-click on each icon and select "Save image as..." or use the download buttons</li>
+            <li>Save them in the <code>/Users/goku/projects/sortPR/icons/</code> directory</li>
+            <li>Make sure to save them with the exact names: icon16.png, icon32.png, icon48.png, icon128.png</li>
+        </ol>
+    </div>
+
+    <script>
+        function drawIcon(canvas, size) {
+            const ctx = canvas.getContext('2d');
+            
+            // Clear canvas
+            ctx.clearRect(0, 0, size, size);
+            
+            // Background circle
+            ctx.fillStyle = '#0969da';
+            ctx.beginPath();
+            ctx.arc(size/2, size/2, size/2 - 1, 0, 2 * Math.PI);
+            ctx.fill();
+            
+            // Calculate sizes based on canvas size
+            const centerX = size / 2;
+            const centerY = size / 2;
+            const fontSize = Math.max(8, size * 0.6);
+            
+            // Draw people emoji or icon
+            ctx.fillStyle = '#ffffff';
+            ctx.font = `${fontSize}px Arial`;
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            
+            // For very small sizes, use a simple symbol
+            if (size <= 16) {
+                ctx.fillText('↕', centerX, centerY);
+            } else {
+                ctx.fillText('👥', centerX, centerY);
+            }
+            
+            // Add small sort indicator for larger sizes
+            if (size >= 32) {
+                ctx.fillStyle = '#ffffff';
+                ctx.font = `${Math.max(6, size * 0.15)}px Arial`;
+                
+                // Draw small arrows to indicate sorting
+                const arrowY = centerY + size * 0.25;
+                ctx.fillText('↕', centerX, arrowY);
+            }
+        }
+
+        function downloadIcon(canvasId, filename) {
+            const canvas = document.getElementById(canvasId);
+            const link = document.createElement('a');
+            link.download = filename;
+            link.href = canvas.toDataURL();
+            link.click();
+        }
+
+        // Generate all icons when page loads
+        window.onload = function() {
+            drawIcon(document.getElementById('icon16'), 16);
+            drawIcon(document.getElementById('icon32'), 32);
+            drawIcon(document.getElementById('icon48'), 48);
+            drawIcon(document.getElementById('icon128'), 128);
+        };
+    </script>
+</body>
+</html>
